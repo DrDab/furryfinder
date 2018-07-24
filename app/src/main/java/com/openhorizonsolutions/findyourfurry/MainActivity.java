@@ -116,6 +116,7 @@ public class MainActivity extends AppCompatActivity
                         DataStore.withinRangeString = getFurryListAsPreviewString(DataStore.withinRange, DataStore.latitude, DataStore.longitude);
                         runOnUiThread(new Runnable()
                         {
+                            DecimalFormat df = new DecimalFormat("#.##");
                             @Override
                             public void run()
                             {
@@ -129,7 +130,7 @@ public class MainActivity extends AppCompatActivity
                                 {
                                     furryName.setText(DataStore.withinRange.get(0).getUserName());
                                     furryDescription.setText(DataStore.withinRange.get(0).getDescription());
-                                    furryDistance.setText(DataStore.withinRange.get(0).distanceFromCoords(DataStore.latitude, DataStore.longitude) + " miles away");
+                                    furryDistance.setText(df.format(DataStore.withinRange.get(0).distanceFromCoords(DataStore.latitude, DataStore.longitude)) + " miles away");
                                 }
                                 furryCountView.setText(DataStore.withinRange.size() + "");
                             }
