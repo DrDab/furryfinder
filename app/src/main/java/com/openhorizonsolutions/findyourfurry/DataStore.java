@@ -3,9 +3,16 @@ package com.openhorizonsolutions.findyourfurry;
 import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
+import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import furrylib.Furry;
@@ -39,5 +46,69 @@ public class DataStore
         }
         return true;
     }   //verifyStoragePermissions
+
+    public static boolean furryDataFileExists(String filename)
+    {
+        File writeDirectory = new File(Environment.getExternalStorageDirectory(), "FindYourFurry");
+        File log = new File(writeDirectory, filename);
+        return log.exists();
+    }
+
+    public static boolean writeFurryDataToJsonFile(String filename) throws IOException
+    {
+        File writeDirectory = new File(Environment.getExternalStorageDirectory(), "FindYourFurry");
+        if (!writeDirectory.exists())
+        {
+            writeDirectory.mkdir();
+        }
+        if (furryJSONData == null)
+        {
+            return false;
+        }
+        else
+        {
+            File log = new File(writeDirectory, filename);
+            if(!log.exists())
+            {
+                log.createNewFile();
+            }
+            PrintWriter madoka = new PrintWriter(new FileWriter(log, true));
+            madoka.print(furryJSONData);
+            madoka.flush();
+            madoka.close();
+            return true;
+        }
+    }
+
+    public static String readFurryDataFromJsonFile(String filename) throws IOException
+    {
+        File readDirectory = new File(Environment.getExternalStorageDirectory(), "FindYourFurry");
+        if (!readDirectory.exists())
+        {
+            readDirectory.mkdir();
+        }
+        File log = new File(readDirectory, filename);
+        if (log.exists())
+        {
+            try
+            {
+                BufferedReader br = new BufferedReader(new FileReader(log));
+                String input;
+                while ((input = br.readLine()) != null)
+                {
+                    furryJSONData += input;
+                }
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        else
+        {
+            return "";
+        }
+        return "";
+    }
 
 }
