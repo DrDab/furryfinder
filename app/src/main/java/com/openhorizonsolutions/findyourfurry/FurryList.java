@@ -1,5 +1,8 @@
 package com.openhorizonsolutions.findyourfurry;
 
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.provider.ContactsContract;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -39,11 +42,11 @@ public class FurryList extends AppCompatActivity
             public void onItemClick(AdapterView arg0, View arg1, int position, long arg3)
             {
                 // position = position selected
-                AlertDialog alertDialog = new AlertDialog.Builder(FurryList.this).create();
+                final AlertDialog alertDialog = new AlertDialog.Builder(FurryList.this).create();
                 alertDialog.setTitle("Furry Information");
                 if (DataStore.withinRange.size() >= 1)
                 {
-                    Furry furry = DataStore.withinRange.get(position);
+                    final Furry furry = DataStore.withinRange.get(position);
                     String s = "";
                     s += "ID: " + furry.getID() + "\n";
                     s += "Username: " + furry.getUserName() + "\n";
@@ -53,6 +56,15 @@ public class FurryList extends AppCompatActivity
                     s += "Latitude: " + furry.getLatitude() + "°\n";
                     s += "Longitude: " + furry.getLongitude() + "°\n";
                     alertDialog.setMessage(s);
+                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Navigate", new DialogInterface.OnClickListener()
+                    {
+                        public void onClick(DialogInterface dialog, int id)
+                        {
+                            Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                                    Uri.parse("http://maps.google.com/maps?daddr=" + furry.getLatitude() + "," + furry.getLongitude() + ""));
+                            startActivity(intent);
+                        }
+                    });
                     alertDialog.show();
                 }
                 else
