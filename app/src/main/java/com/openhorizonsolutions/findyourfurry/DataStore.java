@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+import furrylib.FinderUtils;
 import furrylib.Furry;
 
 public class DataStore
@@ -72,7 +73,7 @@ public class DataStore
             {
                 log.createNewFile();
             }
-            PrintWriter madoka = new PrintWriter(new FileWriter(log, true));
+            PrintWriter madoka = new PrintWriter(new FileWriter(log));
             madoka.print(furryJSONData);
             madoka.flush();
             madoka.close();
@@ -80,7 +81,7 @@ public class DataStore
         }
     }
 
-    public static String readFurryDataFromJsonFile(String filename) throws IOException
+    public static boolean readFurryDataFromJsonFile(String filename) throws IOException
     {
         File readDirectory = new File(Environment.getExternalStorageDirectory(), "FindYourFurry");
         if (!readDirectory.exists())
@@ -93,11 +94,9 @@ public class DataStore
             try
             {
                 BufferedReader br = new BufferedReader(new FileReader(log));
-                String input;
-                while ((input = br.readLine()) != null)
-                {
-                    furryJSONData += input;
-                }
+                furryJSONData = br.readLine();
+                DataStore.furryList = FinderUtils.getFurryList(DataStore.furryJSONData);
+                return true;
             }
             catch (IOException e)
             {
@@ -106,9 +105,9 @@ public class DataStore
         }
         else
         {
-            return "";
+            return false;
         }
-        return "";
+        return false;
     }
 
 }

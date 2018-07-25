@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -98,7 +99,25 @@ public class MainActivity extends AppCompatActivity
             e.printStackTrace();
         }
 
-        fetchFurryJSONData();
+        if (DataStore.furryDataFileExists("combined.json"))
+        {
+            Log.d("FindYourFurry", "File exists!");
+            try
+            {
+                DataStore.readFurryDataFromJsonFile("combined.json");
+                Log.d("FindYourFurry", "Done reading JSON data");
+                DataStore.downloadSuccess = true;
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        else
+        {
+            Log.d("FindYourFurry", "File doesn't exist!");
+            fetchFurryJSONData();
+        }
         keepFurryTallyCount();
     }
 
@@ -125,7 +144,11 @@ public class MainActivity extends AppCompatActivity
         }
         else if (id == R.id.action_syncfurrylist)
         {
-
+            furryCountView.setText("Loading...");
+            furryName.setText("Loading...");
+            furryDescription.setText("Loading...");
+            furryDistance.setText("Loading...");
+            fetchFurryJSONData();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -198,6 +221,14 @@ public class MainActivity extends AppCompatActivity
                     {
                         e.printStackTrace();
                     }
+                }
+                try
+                {
+                    DataStore.writeFurryDataToJsonFile("combined.json");
+                }
+                catch (IOException e)
+                {
+                    e.printStackTrace();
                 }
                 Log.d("MainActivity", "Fetching furry data successful!");
                 DataStore.downloadSuccess = true;
