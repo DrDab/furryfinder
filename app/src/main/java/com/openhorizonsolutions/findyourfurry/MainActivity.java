@@ -154,6 +154,10 @@ public class MainActivity extends AppCompatActivity
         {
             startActivity(new Intent(this, Settings.class));
         }
+        else if (id == R.id.action_about)
+        {
+            startActivity(new Intent(this, About.class));
+        }
         else if (id == R.id.action_syncfurrylist)
         {
             DataStore.downloadSuccess = false;

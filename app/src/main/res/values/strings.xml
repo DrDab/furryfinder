@@ -2,5 +2,6 @@
     <string name="app_name">Find Your Furry</string>
 
     <string name="settings">Settings...</string>
+    <string name="about">About...</string>
     <string name="sync_text">Sync Furries</string>
 </resources>
