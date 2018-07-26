@@ -68,7 +68,14 @@ public class MainActivity extends AppCompatActivity
         furryDistance = (TextView) findViewById(R.id.furryDistance);
         furryCountDescription = (TextView) findViewById(R.id.textView2);
 
-        furryCountDescription.setText("furries within " + new DecimalFormat("#.##").format(DataStore.searchRadius) + " miles of you.");
+        if (DataStore.useMetrics)
+        {
+            furryCountDescription.setText("furries within " + new DecimalFormat("#.##").format(DataStore.searchRadius) + " km of you.");
+        }
+        else
+        {
+            furryCountDescription.setText("furries within " + new DecimalFormat("#.##").format(DataStore.searchRadius) + " miles of you.");
+        }
 
         location = new SimpleLocation(this, DataStore.useGPS, false, 1000);
         location.beginUpdates();
@@ -182,7 +189,7 @@ public class MainActivity extends AppCompatActivity
                 {
                     if (DataStore.downloadSuccess)
                     {
-                        DataStore.withinRange = FinderUtils.getFurryListWithinSearchRadius(DataStore.furryList, DataStore.latitude, DataStore.longitude, DataStore.searchRadius);
+                        DataStore.withinRange = DataStore.useMetrics ? FinderUtils.getFurryListWithinSearchRadiusMetric(DataStore.furryList, DataStore.latitude, DataStore.longitude, DataStore.searchRadius) : FinderUtils.getFurryListWithinSearchRadius(DataStore.furryList, DataStore.latitude, DataStore.longitude, DataStore.searchRadius);
                         DataStore.withinRangeString = getFurryListAsPreviewString(DataStore.withinRange, DataStore.latitude, DataStore.longitude);
                         runOnUiThread(new Runnable()
                         {
@@ -190,7 +197,14 @@ public class MainActivity extends AppCompatActivity
                             @Override
                             public void run()
                             {
-                                furryCountDescription.setText("furries within " + df.format(DataStore.searchRadius) + " miles of you.");
+                                if (DataStore.useMetrics)
+                                {
+                                    furryCountDescription.setText("furries within " + df.format(DataStore.searchRadius) + " km of you.");
+                                }
+                                else
+                                {
+                                    furryCountDescription.setText("furries within " + df.format(DataStore.searchRadius) + " miles of you.");
+                                }
                                 if (DataStore.withinRange.size() == 0)
                                 {
                                     furryName.setText("No furries nearby :3");
@@ -201,7 +215,7 @@ public class MainActivity extends AppCompatActivity
                                 {
                                     furryName.setText(DataStore.withinRange.get(0).getUserName());
                                     furryDescription.setText(DataStore.withinRange.get(0).getDescription());
-                                    furryDistance.setText(df.format(DataStore.withinRange.get(0).distanceFromCoords(DataStore.latitude, DataStore.longitude)) + " miles away");
+                                    furryDistance.setText(DataStore.useMetrics ? df.format(DataStore.withinRange.get(0).distanceFromCoordsMetric(DataStore.latitude, DataStore.longitude)) + " km away" : df.format(DataStore.withinRange.get(0).distanceFromCoords(DataStore.latitude, DataStore.longitude)) + " miles away");
                                 }
                                 furryCountView.setText(DataStore.withinRange.size() + "");
                             }
@@ -261,7 +275,7 @@ public class MainActivity extends AppCompatActivity
         DecimalFormat df = new DecimalFormat("#.##");
         for(Furry furry : e)
         {
-            tmpLst.add(furry.getUserName() + ", " + df.format(furry.distanceFromCoords(latitude, longitude)) + " miles away");
+            tmpLst.add(DataStore.useMetrics ? furry.getUserName() + ", " + df.format(furry.distanceFromCoordsMetric(latitude, longitude)) + " km away" : furry.getUserName() + ", " + df.format(furry.distanceFromCoords(latitude, longitude)) + " miles away");
         }
         return tmpLst;
     }

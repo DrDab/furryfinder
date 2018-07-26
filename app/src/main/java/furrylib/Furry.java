@@ -147,6 +147,29 @@ public class Furry implements Comparable<Furry>
     }
 
     /**
+     * A function to return the distance of the furry in kilometers (in relation to another pair of coordinates).
+     *
+     * @param lat1 (the latitude of the measured object in degrees)
+     * @param lon1 (the longitude of the measured object in degrees)
+     * @return the distance in miles between the location of the instance of this Furry class and another pair of coordinates.
+     */
+    public double distanceFromCoordsMetric(double lat1, double lon1)
+    {
+        return distance(lat1, lon1, latitude, longitude, 'K');
+    }
+
+    /**
+     * A function to return the distance between the location of this instance of the Furry class and another instance of a Furry class in kilometers.
+     *
+     * @param f (an instance of another Furry class)
+     * @return the distance in kilometers between the location this instance of the Furry class and the instance of the other Furry class.
+     */
+    public double distanceFromFurryMetric(Furry f)
+    {
+        return distanceFromCoordsMetric(f.latitude, f.longitude);
+    }
+
+    /**
      * A function to return the compass direction in degrees between a set of coordinates in relation to the furry's coordinates.
      *
      * @param lat1

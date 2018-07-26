@@ -125,6 +125,75 @@ public class FinderUtils
     }
 
     /**
+     * A function to get a sorted ArrayList<Furry> of furries within a defined search radius in kilometers of a pair of coordinates.
+     * The list is sorted by distance from the pair of coordinates.
+     * The input data can be provided via JSON file.
+     *
+     * @param JSONData
+     * @param latitude (the latitude of the defined location)
+     * @param longitude (the longitude of the defined location)
+     * @param searchRadius (the search radius in kilometers)
+     * @return a sorted ArrayList<Furry> of furries within the search radius
+     */
+    public static ArrayList<Furry> getFurryListWithinSearchRadiusMetric(String JSONData, double latitude, double longitude, double searchRadius)
+    {
+        ArrayList<Furry> rawList = FinderUtils.getFurryList(JSONData);
+        ArrayList<FurryDistanceHandler> tmpLst = new ArrayList<FurryDistanceHandler>();
+        ArrayList<Furry> retList = new ArrayList<Furry>();
+        for (Furry e : rawList)
+        {
+            double distance = e.distanceFromCoordsMetric(latitude, longitude);
+            if (distance <= searchRadius)
+            {
+                tmpLst.add(new FurryDistanceHandler(e, distance));
+            }
+        }
+
+        Collections.sort(tmpLst);
+
+        for (FurryDistanceHandler fdh : tmpLst)
+        {
+            retList.add(fdh.getFurry());
+        }
+        return retList;
+    }
+
+
+    /**
+     * A function to get a sorted ArrayList<Furry> of furries within a defined search radius in kilometers of a pair of coordinates.
+     * The list is sorted by distance from the pair of coordinates.
+     * The input data can be provided via an existing sorted or unsorted ArrayList<Furry> containing a list of
+     * Furry classes worldwide.
+     *
+     * @param furryList (an ArrayList<Furry> of furries worldwide)
+     * @param latitude (the latitude of the defined location)
+     * @param longitude (the longitude of the defined location)
+     * @param searchRadius (the search radius in kilometers)
+     * @return a sorted ArrayList<Furry> of furries within the search radius
+     */
+    public static ArrayList<Furry> getFurryListWithinSearchRadiusMetric(ArrayList<Furry> furryList, double latitude, double longitude, double searchRadius)
+    {
+        ArrayList<FurryDistanceHandler> tmpLst = new ArrayList<FurryDistanceHandler>();
+        ArrayList<Furry> retList = new ArrayList<Furry>();
+        for (Furry e : furryList)
+        {
+            double distance = e.distanceFromCoordsMetric(latitude, longitude);
+            if (distance <= searchRadius)
+            {
+                tmpLst.add(new FurryDistanceHandler(e, distance));
+            }
+        }
+
+        Collections.sort(tmpLst);
+
+        for (FurryDistanceHandler fdh : tmpLst)
+        {
+            retList.add(fdh.getFurry());
+        }
+        return retList;
+    }
+
+    /**
      * A function to return online GeoJSON data containing a list of furries from furrymap.net.
      *
      * @return a String containing GeoJSON data.

@@ -13,6 +13,7 @@ public class Settings extends AppCompatActivity
 {
     private EditText radiusForm;
     private CheckBox useGPSCB;
+    private CheckBox useMetricCB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -23,9 +24,11 @@ public class Settings extends AppCompatActivity
 
         radiusForm = (EditText) findViewById(R.id.searchRadiusForm);
         useGPSCB = (CheckBox) findViewById(R.id.gpsCheckBox);
+        useMetricCB = (CheckBox) findViewById(R.id.metricCheckBox);
 
         radiusForm.setText(DataStore.searchRadius + "");
         useGPSCB.setChecked(DataStore.useGPS);
+        useMetricCB.setChecked(DataStore.useMetrics);
     }
 
     public void confirmSettings(View vue)
@@ -41,9 +44,11 @@ public class Settings extends AppCompatActivity
         }
 
         DataStore.useGPS = useGPSCB.isChecked();
+        DataStore.useMetrics = useMetricCB.isChecked();
+
         try
         {
-            DataStore.writeSettingsData("furryconfig.coda", DataStore.searchRadius, DataStore.useGPS);
+            DataStore.writeSettingsData("furryconfig.coda", DataStore.searchRadius, DataStore.useGPS, DataStore.useMetrics);
         }
         catch (IOException e)
         {

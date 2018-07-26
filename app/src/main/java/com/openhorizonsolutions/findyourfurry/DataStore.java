@@ -30,6 +30,7 @@ public class DataStore
 
     public static double searchRadius = 20.0;
     public static boolean useGPS = true;
+    public static boolean useMetrics = false;
 
     public static boolean downloadSuccess = false;
 
@@ -128,6 +129,7 @@ public class DataStore
                 BufferedReader br = new BufferedReader(new FileReader(log));
                 searchRadius = Double.parseDouble(br.readLine());
                 useGPS = br.readLine().contains("y");
+                useMetrics = br.readLine().contains("y");
                 return true;
             }
             catch (IOException e)
@@ -147,7 +149,7 @@ public class DataStore
         return false;
     }
 
-    public static boolean writeSettingsData(String filename, double searchRadius, boolean useGPS) throws IOException
+    public static boolean writeSettingsData(String filename, double searchRadius, boolean useGPS, boolean useMetrics) throws IOException
     {
         File writeDirectory = new File(Environment.getExternalStorageDirectory(), "FindYourFurry");
         if (!writeDirectory.exists())
@@ -165,6 +167,7 @@ public class DataStore
         PrintWriter madoka = new PrintWriter(new FileWriter(log));
         madoka.println(searchRadius + "");
         madoka.println(useGPS ? "y" : "n");
+        madoka.println(useMetrics ? "y" : "n");
 
         madoka.flush();
         madoka.close();
