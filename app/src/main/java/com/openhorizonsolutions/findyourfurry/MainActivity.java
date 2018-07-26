@@ -26,6 +26,8 @@ public class MainActivity extends AppCompatActivity
     private TextView latitudeView;
     private TextView longitudeView;
 
+    private TextView furryCountDescription;
+
     private TextView furryName;
     private TextView furryDescription;
     private TextView furryDistance;
@@ -49,16 +51,26 @@ public class MainActivity extends AppCompatActivity
 
         setContentView(R.layout.activity_main);
 
+        try
+        {
+            DataStore.readSettingsData("furryconfig.coda");
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+
         furryCountView = (TextView) findViewById(R.id.furryCountTeext);
         latitudeView = (TextView) findViewById(R.id.latitudeText);
         longitudeView = (TextView) findViewById(R.id.longitudeText);
         furryName = (TextView) findViewById(R.id.furryName);
         furryDescription = (TextView) findViewById(R.id.furryDescription);
         furryDistance = (TextView) findViewById(R.id.furryDistance);
+        furryCountDescription = (TextView) findViewById(R.id.textView2);
 
-        location = new SimpleLocation(this, true, false, 1000);
-        // location = new SimpleLocation(this);
+        furryCountDescription.setText("furries within " + new DecimalFormat("#.##").format(DataStore.searchRadius) + " miles of you.");
 
+        location = new SimpleLocation(this, DataStore.useGPS, false, 1000);
         location.beginUpdates();
 
         try
@@ -140,10 +152,11 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         if (id == R.id.action_settings)
         {
-
+            startActivity(new Intent(this, Settings.class));
         }
         else if (id == R.id.action_syncfurrylist)
         {
+            DataStore.downloadSuccess = false;
             furryCountView.setText("Loading...");
             furryName.setText("Loading...");
             furryDescription.setText("Loading...");
@@ -165,7 +178,7 @@ public class MainActivity extends AppCompatActivity
                 {
                     if (DataStore.downloadSuccess)
                     {
-                        DataStore.withinRange = FinderUtils.getFurryListWithinSearchRadius(DataStore.furryList, DataStore.latitude, DataStore.longitude, 20.0);
+                        DataStore.withinRange = FinderUtils.getFurryListWithinSearchRadius(DataStore.furryList, DataStore.latitude, DataStore.longitude, DataStore.searchRadius);
                         DataStore.withinRangeString = getFurryListAsPreviewString(DataStore.withinRange, DataStore.latitude, DataStore.longitude);
                         runOnUiThread(new Runnable()
                         {
@@ -173,6 +186,7 @@ public class MainActivity extends AppCompatActivity
                             @Override
                             public void run()
                             {
+                                furryCountDescription.setText("furries within " + df.format(DataStore.searchRadius) + " miles of you.");
                                 if (DataStore.withinRange.size() == 0)
                                 {
                                     furryName.setText("No furries nearby :3");

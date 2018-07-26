@@ -28,6 +28,9 @@ public class DataStore
     public static double latitude = 0.0;
     public static double longitude = 0.0;
 
+    public static double searchRadius = 20.0;
+    public static boolean useGPS = true;
+
     public static boolean downloadSuccess = false;
 
     public static boolean verifyStoragePermissions(Activity activity)
@@ -108,6 +111,64 @@ public class DataStore
             return false;
         }
         return false;
+    }
+
+    public static boolean readSettingsData(String filename) throws IOException
+    {
+        File readDirectory = new File(Environment.getExternalStorageDirectory(), "FindYourFurry");
+        if (!readDirectory.exists())
+        {
+            readDirectory.mkdir();
+        }
+        File log = new File(readDirectory, filename);
+        if (log.exists())
+        {
+            try
+            {
+                BufferedReader br = new BufferedReader(new FileReader(log));
+                searchRadius = Double.parseDouble(br.readLine());
+                useGPS = br.readLine().contains("y");
+                return true;
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+            catch (NullPointerException e1)
+            {
+                e1.printStackTrace();
+            }
+        }
+        else
+        {
+            log.createNewFile();
+            return false;
+        }
+        return false;
+    }
+
+    public static boolean writeSettingsData(String filename, double searchRadius, boolean useGPS) throws IOException
+    {
+        File writeDirectory = new File(Environment.getExternalStorageDirectory(), "FindYourFurry");
+        if (!writeDirectory.exists())
+        {
+            writeDirectory.mkdir();
+        }
+
+        File log = new File(writeDirectory, filename);
+
+        if(!log.exists())
+        {
+            log.createNewFile();
+        }
+
+        PrintWriter madoka = new PrintWriter(new FileWriter(log));
+        madoka.println(searchRadius + "");
+        madoka.println(useGPS ? "y" : "n");
+
+        madoka.flush();
+        madoka.close();
+        return true;
     }
 
 }

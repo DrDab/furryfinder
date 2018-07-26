@@ -27,6 +27,9 @@ public class FurryList extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_furry_list);
+
+        setTitle("Furry List! :3");
+
         contestList = (ListView) findViewById(R.id.furryListView);
 
 
