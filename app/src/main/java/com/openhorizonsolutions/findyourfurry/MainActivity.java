@@ -56,8 +56,8 @@ public class MainActivity extends AppCompatActivity
         furryDescription = (TextView) findViewById(R.id.furryDescription);
         furryDistance = (TextView) findViewById(R.id.furryDistance);
 
-        //location = new SimpleLocation(this, true, false, 1000);
-        location = new SimpleLocation(this);
+        location = new SimpleLocation(this, true, false, 1000);
+        // location = new SimpleLocation(this);
 
         location.beginUpdates();
 

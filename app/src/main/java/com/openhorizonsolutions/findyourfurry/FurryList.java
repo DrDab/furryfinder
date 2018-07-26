@@ -76,5 +76,33 @@ public class FurryList extends AppCompatActivity
             }
         });
 
+        new Thread(new Runnable()
+        {
+            public void run()
+            {
+                for(;;)
+                {
+                    runOnUiThread(new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
+                    try
+                    {
+                        Thread.sleep(10000);
+                    }
+                    catch (InterruptedException e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        }
+        ).start();
+
     }
 }
