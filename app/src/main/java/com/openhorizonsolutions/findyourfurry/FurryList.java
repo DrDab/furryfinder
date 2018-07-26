@@ -64,7 +64,7 @@ public class FurryList extends AppCompatActivity
                         public void onClick(DialogInterface dialog, int id)
                         {
                             Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                                    Uri.parse("http://maps.google.com/maps?daddr=" + furry.getLatitude() + "," + furry.getLongitude() + ""));
+                                    Uri.parse("geo:0,0?q=" + furry.getLatitude() +  "," + furry.getLongitude() +  "(" + furry.getUserName() + ")"));
                             startActivity(intent);
                         }
                     });
