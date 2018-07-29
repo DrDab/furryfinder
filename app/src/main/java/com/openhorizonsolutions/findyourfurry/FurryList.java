@@ -55,7 +55,7 @@ public class FurryList extends AppCompatActivity
                     s += "Username: " + furry.getUserName() + "\n";
                     s += "Description: " + furry.getDescription() + "\n";
                     s += "Profile: http://furrymap.net" + furry.getProfile() + "\n";
-                    s += "Distance: " + new DecimalFormat("#.##").format(furry.distanceFromCoords(DataStore.latitude, DataStore.longitude)) + " miles\n";
+                    s += "Distance: " + new DecimalFormat("#.##").format(DataStore.useMetrics ? furry.distanceFromCoordsMetric(DataStore.latitude, DataStore.longitude) : furry.distanceFromCoords(DataStore.latitude, DataStore.longitude)) + (DataStore.useMetrics ? " km\n" : " miles\n");
                     s += "Latitude: " + furry.getLatitude() + "°\n";
                     s += "Longitude: " + furry.getLongitude() + "°\n";
                     alertDialog.setMessage(s);
@@ -90,6 +90,10 @@ public class FurryList extends AppCompatActivity
                         @Override
                         public void run()
                         {
+                            adapter = new ArrayAdapter <String>
+                                    (FurryList.this, android.R.layout.simple_list_item_1,
+                                            DataStore.withinRangeString);
+                            contestList.setAdapter(adapter);
                             adapter.notifyDataSetChanged();
                         }
                     });
