@@ -46,8 +46,17 @@ public class FurryList extends AppCompatActivity
             {
                 // position = position selected
                 final AlertDialog alertDialog = new AlertDialog.Builder(FurryList.this).create();
+                boolean safetyCheck = false;
+                try
+                {
+                    DataStore.withinRange.get(position);
+                }
+                catch (NullPointerException npe)
+                {
+                    safetyCheck = true;
+                }
                 alertDialog.setTitle("Furry Information");
-                if (DataStore.withinRange.size() >= 1)
+                if (!safetyCheck)
                 {
                     final Furry furry = DataStore.withinRange.get(position);
                     String s = "";
@@ -72,7 +81,7 @@ public class FurryList extends AppCompatActivity
                 }
                 else
                 {
-                    alertDialog.setMessage("No Furries Yet");
+                    alertDialog.setMessage("That furry doesn't exist!");
                     alertDialog.show();
                 }
 
@@ -90,16 +99,20 @@ public class FurryList extends AppCompatActivity
                         @Override
                         public void run()
                         {
+                            int index = contestList.getFirstVisiblePosition(); //This changed
+                            View v = contestList.getChildAt(0);
+                            int top = (v == null) ? 0 : v.getTop();
                             adapter = new ArrayAdapter <String>
                                     (FurryList.this, android.R.layout.simple_list_item_1,
                                             DataStore.withinRangeString);
                             contestList.setAdapter(adapter);
                             adapter.notifyDataSetChanged();
+                            contestList.setSelectionFromTop(index, top);
                         }
                     });
                     try
                     {
-                        Thread.sleep(10000);
+                        Thread.sleep(2000);
                     }
                     catch (InterruptedException e)
                     {
