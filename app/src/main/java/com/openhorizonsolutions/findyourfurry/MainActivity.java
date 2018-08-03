@@ -165,6 +165,10 @@ public class MainActivity extends AppCompatActivity
         {
             startActivity(new Intent(this, About.class));
         }
+        else if (id == R.id.action_creategpx)
+        {
+            startActivity(new Intent(this, GenerateGarminGPX.class));
+        }
         else if (id == R.id.action_syncfurrylist)
         {
             DataStore.downloadSuccess = false;

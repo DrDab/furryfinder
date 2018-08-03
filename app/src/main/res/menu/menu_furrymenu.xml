@@ -16,6 +16,11 @@
         app:showAsAction="never"/>
 
     <item
+        android:id="@+id/action_creategpx"
+        android:title="@string/make_gpx"
+        app:showAsAction="never"/>
+
+    <item
         android:id="@+id/action_syncfurrylist"
         android:title="@string/sync_text"
         app:showAsAction="never"/>
