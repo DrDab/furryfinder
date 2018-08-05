@@ -178,12 +178,13 @@ public class Furry implements Comparable<Furry>
      */
     public double angleFromCoords(double lat1, double lon1)
     {
-        double latitudeDesired = (lat1);
-        double longitudeDesired = (lon1);
-        double ldlm = Math.toRadians(longitudeDesired - longitude);
-        double div = (Math.sin(ldlm)) / ((Math.cos(Math.toRadians(latitudeDesired)) * Math.tan(Math.toRadians(latitude))) - (Math.sin(Math.toRadians(latitudeDesired)) * Math.cos(ldlm)));
-        double res = Math.toDegrees(Math.atan(div));
-        return Math.abs(res);
+        double phi1 = Math.toRadians(lat1);
+        double phi2 = Math.toRadians(latitude);
+        double delta = Math.toRadians(longitude - lon1);
+        double y = Math.sin(delta) * Math.cos(phi2);
+        double x = Math.cos(phi1) * Math.sin(phi2) - Math.sin(phi1) * Math.cos(phi2) * Math.cos(delta);
+        double theta = Math.atan2(y, x);
+        return (Math.toDegrees(theta) + 360.0) % 360.0;
     }
 
     /**
