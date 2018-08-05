@@ -67,6 +67,7 @@ public class FurryList extends AppCompatActivity
                     s += "Distance: " + new DecimalFormat("#.##").format(DataStore.useMetrics ? furry.distanceFromCoordsMetric(DataStore.latitude, DataStore.longitude) : furry.distanceFromCoords(DataStore.latitude, DataStore.longitude)) + (DataStore.useMetrics ? " km\n" : " miles\n");
                     s += "Latitude: " + furry.getLatitude() + "°\n";
                     s += "Longitude: " + furry.getLongitude() + "°\n";
+                    s += "Direction: " + new DecimalFormat("#.#").format(furry.angleFromCoords(DataStore.latitude, DataStore.longitude)) + "°\n";
                     alertDialog.setMessage(s);
                     alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Navigate", new DialogInterface.OnClickListener()
                     {
