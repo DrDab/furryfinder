@@ -190,8 +190,7 @@ public class Furry implements Comparable<Furry>
     /**
      * A function to return the compass direction in degrees between a furry in relation to the current furry's coordinates.
      *
-     * @param lat1
-     * @param lon1
+     * @param f
      * @return the compass direction in degrees. [0, 360)
      */
     public double angleFromFurry(Furry f)
