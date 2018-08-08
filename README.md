@@ -1,5 +1,5 @@
 # Find Your Furry
-[[https://raw.githubusercontent.com/DrDab/furryfinder/master/media/web_hi_res_512.png|alt=mainicon]]
+![alt text](https://raw.githubusercontent.com/DrDab/furryfinder/master/media/web_hi_res_512.png)
 An Android app to help you find furries near you quickly! This app fetches data from furrymap.net and presents them in a mobile-ready manner, letting you discover furries near you easily!
 
 # How to use
