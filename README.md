@@ -14,6 +14,13 @@ An Android app to help you find furries near you quickly! This app fetches data 
 - Data relevant to user conditions is displayed, such as distance and azimuth from user,
 - Options to export scraped data to Garmin GPX file for sideloading onto Garmin GPS devices, such as Garmin fenix/tactix.
 
+# Screenshots
+![alt text](https://raw.githubusercontent.com/DrDab/furryfinder/master/media/scrot_1.png)
+
+![alt text](https://raw.githubusercontent.com/DrDab/furryfinder/master/media/scrot_2.png)
+
+![alt text](https://raw.githubusercontent.com/DrDab/furryfinder/master/media/scrot_3.png)
+
 # Disclaimer
 I am not responsible from any consequences caused by your usage this app, including legal consequences, acts of god, spontaneous combustion, dimension-shifting, personal injury or death that you incur by using this app. Please use this app responsibly. The data this app reports is not by any means trustable or reliable whatsoever.
 
