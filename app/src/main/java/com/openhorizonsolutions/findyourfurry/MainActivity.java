@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.io.IOException;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import furrylib.FinderUtils;
@@ -68,14 +67,7 @@ public class MainActivity extends AppCompatActivity
         furryDistance = (TextView) findViewById(R.id.furryDistance);
         furryCountDescription = (TextView) findViewById(R.id.textView2);
 
-        if (DataStore.useMetrics)
-        {
-            furryCountDescription.setText("furries within " + new DecimalFormat("#.##").format(DataStore.searchRadius) + " km of you.");
-        }
-        else
-        {
-            furryCountDescription.setText("furries within " + new DecimalFormat("#.##").format(DataStore.searchRadius) + " miles of you.");
-        }
+        furryCountDescription.setText(String.format("furries within %5.2f %s of you", DataStore.searchRadius, (DataStore.useMetrics ? "km" : "miles")));
 
         location = new SimpleLocation(this, DataStore.useGPS, false, 1000);
         location.beginUpdates();
@@ -95,8 +87,8 @@ public class MainActivity extends AppCompatActivity
                             @Override
                             public void run()
                             {
-                                latitudeView.setText(DataStore.latitude + "°");
-                                longitudeView.setText(DataStore.longitude + "°");
+                                latitudeView.setText(String.format("%8.5f°", DataStore.latitude));
+                                longitudeView.setText(String.format("%8.5f°", DataStore.longitude));
                             }
                         });
                         try
@@ -197,18 +189,10 @@ public class MainActivity extends AppCompatActivity
                         DataStore.withinRangeString = getFurryListAsPreviewString(DataStore.withinRange, DataStore.latitude, DataStore.longitude);
                         runOnUiThread(new Runnable()
                         {
-                            DecimalFormat df = new DecimalFormat("#.##");
                             @Override
                             public void run()
                             {
-                                if (DataStore.useMetrics)
-                                {
-                                    furryCountDescription.setText("furries within " + df.format(DataStore.searchRadius) + " km of you.");
-                                }
-                                else
-                                {
-                                    furryCountDescription.setText("furries within " + df.format(DataStore.searchRadius) + " miles of you.");
-                                }
+                                furryCountDescription.setText(String.format("furries within %5.2f %s of you", DataStore.searchRadius, (DataStore.useMetrics ? "km" : "miles")));
                                 if (DataStore.withinRange.size() == 0)
                                 {
                                     furryName.setText("No furries nearby :3");
@@ -219,7 +203,7 @@ public class MainActivity extends AppCompatActivity
                                 {
                                     furryName.setText(DataStore.withinRange.get(0).getUserName());
                                     furryDescription.setText(DataStore.withinRange.get(0).getDescription());
-                                    furryDistance.setText(DataStore.useMetrics ? df.format(DataStore.withinRange.get(0).distanceFromCoordsMetric(DataStore.latitude, DataStore.longitude)) + " km away" : df.format(DataStore.withinRange.get(0).distanceFromCoords(DataStore.latitude, DataStore.longitude)) + " miles away");
+                                    furryDistance.setText(String.format("%5.2f %s away", (DataStore.useMetrics ? DataStore.withinRange.get(0).distanceFromCoordsMetric(DataStore.latitude, DataStore.longitude) : DataStore.withinRange.get(0).distanceFromCoords(DataStore.latitude, DataStore.longitude)), (DataStore.useMetrics ? "km" : "miles")));
                                 }
                                 furryCountView.setText(DataStore.withinRange.size() + "");
                             }
@@ -242,7 +226,6 @@ public class MainActivity extends AppCompatActivity
     {
         new Thread(new Runnable()
         {
-
             @Override
             public void run()
             {
@@ -276,10 +259,9 @@ public class MainActivity extends AppCompatActivity
     public ArrayList<String> getFurryListAsPreviewString(ArrayList<Furry> e, double latitude, double longitude)
     {
         ArrayList<String> tmpLst = new ArrayList<String>();
-        DecimalFormat df = new DecimalFormat("#.##");
         for(Furry furry : e)
         {
-            tmpLst.add(DataStore.useMetrics ? furry.getUserName() + ", " + df.format(furry.distanceFromCoordsMetric(latitude, longitude)) + " km away" : furry.getUserName() + ", " + df.format(furry.distanceFromCoords(latitude, longitude)) + " miles away");
+            tmpLst.add(String.format("%s, %5.2f %s away", furry.getUserName(), (DataStore.useMetrics ? furry.distanceFromCoordsMetric(latitude, longitude) : furry.distanceFromCoords(latitude, longitude)), (DataStore.useMetrics ? "km" : "miles")));
         }
         return tmpLst;
     }
