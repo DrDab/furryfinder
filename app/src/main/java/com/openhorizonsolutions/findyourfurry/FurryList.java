@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import furrylib.Furry;
@@ -57,6 +58,10 @@ public class FurryList extends AppCompatActivity
                 if (!safetyCheck)
                 {
                     final Furry furry = DataStore.withinRange.get(position);
+                    // TODO: add profile picture in the future?
+                    // ImageView image = new ImageView(FurryList.this);
+                    // image.setImageResource(R.drawable.furrymap);
+                    // alertDialog.setView(image);
                     String s = "";
                     s += "ID: " + furry.getID() + "\n";
                     s += "Username: " + furry.getUserName() + "\n";

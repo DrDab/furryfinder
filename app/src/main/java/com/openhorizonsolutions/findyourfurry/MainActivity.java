@@ -72,44 +72,6 @@ public class MainActivity extends AppCompatActivity
         location = new SimpleLocation(this, DataStore.useGPS, false, 1000);
         location.beginUpdates();
 
-        try
-        {
-            new Thread(new Runnable()
-            {
-                public void run()
-                {
-                    for(;;)
-                    {
-                        DataStore.latitude = location.getLatitude();
-                        DataStore.longitude = location.getLongitude();
-                        runOnUiThread(new Runnable()
-                        {
-                            @Override
-                            public void run()
-                            {
-                                latitudeView.setText(String.format("%8.5f°", DataStore.latitude));
-                                longitudeView.setText(String.format("%8.5f°", DataStore.longitude));
-                            }
-                        });
-                        try
-                        {
-                            Thread.sleep(1000);
-                        }
-                        catch (InterruptedException e)
-                        {
-                            e.printStackTrace();
-                        }
-                    }
-
-                }
-            }
-            ).start();
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-
         if (DataStore.furryDataFileExists("combined.json"))
         {
             Log.d("FindYourFurry", "File exists!");
@@ -183,14 +145,23 @@ public class MainActivity extends AppCompatActivity
             {
                 for(;;)
                 {
+                    DataStore.latitude = location.getLatitude();
+                    DataStore.longitude = location.getLongitude();
+
                     if (DataStore.downloadSuccess)
                     {
                         DataStore.withinRange = DataStore.useMetrics ? FinderUtils.getFurryListWithinSearchRadiusMetric(DataStore.furryList, DataStore.latitude, DataStore.longitude, DataStore.searchRadius) : FinderUtils.getFurryListWithinSearchRadius(DataStore.furryList, DataStore.latitude, DataStore.longitude, DataStore.searchRadius);
                         DataStore.withinRangeString = getFurryListAsPreviewString(DataStore.withinRange, DataStore.latitude, DataStore.longitude);
-                        runOnUiThread(new Runnable()
+                    }
+
+                    runOnUiThread(new Runnable()
+                    {
+                        @Override
+                        public void run()
                         {
-                            @Override
-                            public void run()
+                            latitudeView.setText(String.format("%8.5f°", DataStore.latitude));
+                            longitudeView.setText(String.format("%8.5f°", DataStore.longitude));
+                            if (DataStore.downloadSuccess)
                             {
                                 furryCountDescription.setText(String.format("furries within %5.2f %s of you", DataStore.searchRadius, (DataStore.useMetrics ? "km" : "miles")));
                                 if (DataStore.withinRange.size() == 0)
@@ -207,15 +178,16 @@ public class MainActivity extends AppCompatActivity
                                 }
                                 furryCountView.setText(DataStore.withinRange.size() + "");
                             }
-                        });
-                        try
-                        {
-                            Thread.sleep(1000);
                         }
-                        catch (InterruptedException e)
-                        {
-                            e.printStackTrace();
-                        }
+                    });
+
+                    try
+                    {
+                        Thread.sleep(1000);
+                    }
+                    catch (InterruptedException e)
+                    {
+                        e.printStackTrace();
                     }
                 }
             }
