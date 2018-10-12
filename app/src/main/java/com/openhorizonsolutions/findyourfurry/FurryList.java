@@ -81,6 +81,15 @@ public class FurryList extends AppCompatActivity
                             startActivity(intent);
                         }
                     });
+                    alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Profile", new DialogInterface.OnClickListener()
+                    {
+                        public void onClick(DialogInterface dialog, int id)
+                        {
+                            Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                                    Uri.parse("http://furrymap.net" + furry.getProfile()));
+                            startActivity(intent);
+                        }
+                    });
                     alertDialog.show();
                 }
                 else
