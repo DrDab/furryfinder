@@ -12,8 +12,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import java.text.DecimalFormat;
-
 import furrylib.Furry;
 
 public class FurryList extends AppCompatActivity
@@ -64,10 +62,10 @@ public class FurryList extends AppCompatActivity
                     s += "Username: " + furry.getUserName() + "\n";
                     s += "Description: " + furry.getDescription() + "\n";
                     s += "Profile: http://furrymap.net" + furry.getProfile() + "\n";
-                    s += "Distance: " + new DecimalFormat("#.##").format(DataStore.useMetrics ? furry.distanceFromCoordsMetric(DataStore.latitude, DataStore.longitude) : furry.distanceFromCoords(DataStore.latitude, DataStore.longitude)) + (DataStore.useMetrics ? " km\n" : " miles\n");
+                    s += "Distance: " + String.format("%5.2f %s\n", (DataStore.useMetrics ? furry.distanceFromCoordsMetric(DataStore.latitude, DataStore.longitude) : furry.distanceFromCoords(DataStore.latitude, DataStore.longitude)), (DataStore.useMetrics ? " km" : " miles"));
                     s += "Latitude: " + furry.getLatitude() + "°\n";
                     s += "Longitude: " + furry.getLongitude() + "°\n";
-                    s += "Direction: " + new DecimalFormat("#.#").format(furry.angleFromCoords(DataStore.latitude, DataStore.longitude)) + "°\n";
+                    s += "Direction: " + String.format("%5.1f°", furry.angleFromCoords(DataStore.latitude, DataStore.longitude));
                     alertDialog.setMessage(s);
                     alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Navigate", new DialogInterface.OnClickListener()
                     {
