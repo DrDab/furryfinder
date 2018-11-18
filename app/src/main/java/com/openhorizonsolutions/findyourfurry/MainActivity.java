@@ -137,61 +137,38 @@ public class MainActivity extends AppCompatActivity
 
     public void keepFurryTallyCount()
     {
-        new Thread(new Runnable()
+        location.setListener(new SimpleLocation.Listener()
         {
-
             @Override
-            public void run()
+            public void onPositionChanged()
             {
-                for(;;)
+                DataStore.latitude = location.getLatitude();
+                DataStore.longitude = location.getLongitude();
+
+                latitudeView.setText(String.format("%8.5f°", DataStore.latitude));
+                longitudeView.setText(String.format("%8.5f°", DataStore.longitude));
+
+                if (DataStore.downloadSuccess)
                 {
-                    DataStore.latitude = location.getLatitude();
-                    DataStore.longitude = location.getLongitude();
-
-                    if (DataStore.downloadSuccess)
+                    DataStore.withinRange = DataStore.useMetrics ? FinderUtils.getFurryListWithinSearchRadiusMetric(DataStore.furryList, DataStore.latitude, DataStore.longitude, DataStore.searchRadius) : FinderUtils.getFurryListWithinSearchRadius(DataStore.furryList, DataStore.latitude, DataStore.longitude, DataStore.searchRadius);
+                    DataStore.withinRangeString = getFurryListAsPreviewString(DataStore.withinRange, DataStore.latitude, DataStore.longitude);
+                    furryCountDescription.setText(String.format("furries within %5.2f %s of you", DataStore.searchRadius, (DataStore.useMetrics ? "km" : "miles")));
+                    if (DataStore.withinRange.size() == 0)
                     {
-                        DataStore.withinRange = DataStore.useMetrics ? FinderUtils.getFurryListWithinSearchRadiusMetric(DataStore.furryList, DataStore.latitude, DataStore.longitude, DataStore.searchRadius) : FinderUtils.getFurryListWithinSearchRadius(DataStore.furryList, DataStore.latitude, DataStore.longitude, DataStore.searchRadius);
-                        DataStore.withinRangeString = getFurryListAsPreviewString(DataStore.withinRange, DataStore.latitude, DataStore.longitude);
+                        furryName.setText("No furries nearby :3");
+                        furryDescription.setText("");
+                        furryDistance.setText("");
                     }
-
-                    runOnUiThread(new Runnable()
+                    else
                     {
-                        @Override
-                        public void run()
-                        {
-                            latitudeView.setText(String.format("%8.5f°", DataStore.latitude));
-                            longitudeView.setText(String.format("%8.5f°", DataStore.longitude));
-                            if (DataStore.downloadSuccess)
-                            {
-                                furryCountDescription.setText(String.format("furries within %5.2f %s of you", DataStore.searchRadius, (DataStore.useMetrics ? "km" : "miles")));
-                                if (DataStore.withinRange.size() == 0)
-                                {
-                                    furryName.setText("No furries nearby :3");
-                                    furryDescription.setText("");
-                                    furryDistance.setText("");
-                                }
-                                else
-                                {
-                                    furryName.setText(DataStore.withinRange.get(0).getUserName());
-                                    furryDescription.setText(DataStore.withinRange.get(0).getDescription());
-                                    furryDistance.setText(String.format("%5.2f %s away", (DataStore.useMetrics ? DataStore.withinRange.get(0).distanceFromCoordsMetric(DataStore.latitude, DataStore.longitude) : DataStore.withinRange.get(0).distanceFromCoords(DataStore.latitude, DataStore.longitude)), (DataStore.useMetrics ? "km" : "miles")));
-                                }
-                                furryCountView.setText(DataStore.withinRange.size() + "");
-                            }
-                        }
-                    });
-
-                    try
-                    {
-                        Thread.sleep(1000);
+                        furryName.setText(DataStore.withinRange.get(0).getUserName());
+                        furryDescription.setText(DataStore.withinRange.get(0).getDescription());
+                        furryDistance.setText(String.format("%5.2f %s away", (DataStore.useMetrics ? DataStore.withinRange.get(0).distanceFromCoordsMetric(DataStore.latitude, DataStore.longitude) : DataStore.withinRange.get(0).distanceFromCoords(DataStore.latitude, DataStore.longitude)), (DataStore.useMetrics ? "km" : "miles")));
                     }
-                    catch (InterruptedException e)
-                    {
-                        e.printStackTrace();
-                    }
+                    furryCountView.setText(DataStore.withinRange.size() + "");
                 }
             }
-        }).start();
+        });
     }
 
     public void fetchFurryJSONData()

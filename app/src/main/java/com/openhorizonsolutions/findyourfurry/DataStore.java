@@ -33,6 +33,7 @@ public class DataStore
     public static boolean useMetrics = false;
 
     public static boolean downloadSuccess = false;
+    public static boolean updatorThreadInit = false;
 
     public static boolean verifyStoragePermissions(Activity activity)
     {
