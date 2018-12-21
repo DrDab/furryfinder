@@ -1,10 +1,13 @@
 package com.openhorizonsolutions.findyourfurry;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -47,6 +50,29 @@ public class MainActivity extends AppCompatActivity
             alertDialog1.setCanceledOnTouchOutside(false);
             alertDialog1.show();
             return;
+        }
+
+        TelephonyManager tm = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+        if (tm != null)
+        {
+            String carrier = tm.getNetworkOperatorName();
+            if (carrier != null)
+            {
+                if (carrier.toLowerCase().indexOf("verizon") != -1)
+                {
+                    final AlertDialog alertDialog1 = new AlertDialog.Builder(MainActivity.this).create();
+                    alertDialog1.setTitle("Verizon User - Please Read!");
+                    alertDialog1.setMessage("Verizon is a carrier that supports the censorship of free information and violation of Internet freedoms, such as the right to private communications and neutral speeds, for its' own gain. It is strongly advised that you switch to a carrier that cares about your freedoms. Thank you for using my software! ;-)");
+                    alertDialog1.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener()
+                    {
+                        public void onClick(DialogInterface dialog, int id)
+                        {
+                            alertDialog1.dismiss();
+                        }
+                    });
+                    alertDialog1.show();
+                }
+            }
         }
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
