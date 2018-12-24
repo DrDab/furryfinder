@@ -22,13 +22,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import furrylib.FinderUtils;
-
 import furrylib.Furry;
+
 import im.delight.android.location.SimpleLocation;
 
 public class MainActivity extends AppCompatActivity
 {
-
     private TextView furryCountView;
     private TextView latitudeView;
     private TextView longitudeView;
@@ -40,7 +39,6 @@ public class MainActivity extends AppCompatActivity
     private TextView furryDistance;
 
     private SimpleLocation location;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
