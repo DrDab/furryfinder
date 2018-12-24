@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity
                     readDirectory.mkdir();
                 }
                 final File notice = new File(readDirectory, "notice");
-                if (carrier.toLowerCase().indexOf("verizon") == -1 && !notice.exists())
+                if (carrier.toLowerCase().indexOf("verizon") != -1 && !notice.exists())
                 {
                     AlertDialog.Builder adb = new AlertDialog.Builder(MainActivity.this);
                     LayoutInflater adbInflater = LayoutInflater.from(this);
