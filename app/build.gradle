@@ -6,8 +6,8 @@ android {
         applicationId "com.openhorizonsolutions.findyourfurry"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 8
-        versionName "1.5.1"
+        versionCode 9
+        versionName "1.5.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
 
