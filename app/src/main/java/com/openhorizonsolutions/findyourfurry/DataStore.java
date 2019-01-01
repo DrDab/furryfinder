@@ -25,6 +25,9 @@ public class DataStore
     public static ArrayList<Furry> furryList = new ArrayList<Furry>();
     public static ArrayList<String> withinRangeString = new ArrayList<String>();
 
+    public static ArrayList<Furry> withinRangeSearch = new ArrayList<Furry>();
+    public static ArrayList<String> withinRangeStringSearch = new ArrayList<String>();
+
     public static double latitude = 0.0;
     public static double longitude = 0.0;
 
@@ -52,6 +55,16 @@ public class DataStore
         }
         return true;
     }   //verifyStoragePermissions
+
+    public static ArrayList<String> getFurryListAsPreviewString(ArrayList<Furry> e, double latitude, double longitude)
+    {
+        ArrayList<String> tmpLst = new ArrayList<String>();
+        for(Furry furry : e)
+        {
+            tmpLst.add(String.format("%s, %5.2f %s away", furry.getUserName(), (DataStore.useMetrics ? furry.distanceFromCoordsMetric(latitude, longitude) : furry.distanceFromCoords(latitude, longitude)), (DataStore.useMetrics ? "km" : "miles")));
+        }
+        return tmpLst;
+    }
 
     public static boolean furryDataFileExists(String filename)
     {

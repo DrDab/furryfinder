@@ -163,7 +163,11 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item)
     {
         int id = item.getItemId();
-        if (id == R.id.action_settings)
+        if (id == R.id.action_search)
+        {
+            startActivity(new Intent(this, Search.class));
+        }
+        else if (id == R.id.action_settings)
         {
             startActivity(new Intent(this, Settings.class));
         }
@@ -195,7 +199,7 @@ public class MainActivity extends AppCompatActivity
         if (DataStore.downloadSuccess)
         {
             DataStore.withinRange = DataStore.useMetrics ? FinderUtils.getFurryListWithinSearchRadiusMetric(DataStore.furryList, DataStore.latitude, DataStore.longitude, DataStore.searchRadius) : FinderUtils.getFurryListWithinSearchRadius(DataStore.furryList, DataStore.latitude, DataStore.longitude, DataStore.searchRadius);
-            DataStore.withinRangeString = getFurryListAsPreviewString(DataStore.withinRange, DataStore.latitude, DataStore.longitude);
+            DataStore.withinRangeString = DataStore.getFurryListAsPreviewString(DataStore.withinRange, DataStore.latitude, DataStore.longitude);
         }
 
         runOnUiThread(new Runnable()
@@ -291,19 +295,11 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    public ArrayList<String> getFurryListAsPreviewString(ArrayList<Furry> e, double latitude, double longitude)
-    {
-        ArrayList<String> tmpLst = new ArrayList<String>();
-        for(Furry furry : e)
-        {
-            tmpLst.add(String.format("%s, %5.2f %s away", furry.getUserName(), (DataStore.useMetrics ? furry.distanceFromCoordsMetric(latitude, longitude) : furry.distanceFromCoords(latitude, longitude)), (DataStore.useMetrics ? "km" : "miles")));
-        }
-        return tmpLst;
-    }
-
     public void launchFurryList(View vue)
     {
-        startActivity(new Intent(this, FurryList.class));
+        Intent furryListIntent = new Intent(this, FurryList.class);
+        furryListIntent.putExtra("listmode", ListMode.LIVE_MODE);
+        startActivity(furryListIntent);
     }
 
 }

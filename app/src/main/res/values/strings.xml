@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Find Your Furry</string>
 
+    <string name="search">Search...</string>
     <string name="settings">Settings...</string>
     <string name="about">About...</string>
     <string name="make_gpx">Create Garmin GPX</string>

@@ -27,7 +27,8 @@
         <activity android:name=".FurryList" />
         <activity android:name=".Settings" />
         <activity android:name=".About" />
-        <activity android:name=".GenerateGarminGPX"></activity>
+        <activity android:name=".GenerateGarminGPX" />
+        <activity android:name=".Search"></activity>
     </application>
 
 </manifest>
