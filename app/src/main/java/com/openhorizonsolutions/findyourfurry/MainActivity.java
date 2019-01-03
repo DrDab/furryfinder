@@ -19,10 +19,8 @@ import android.widget.TextView;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import furrylib.FinderUtils;
-import furrylib.Furry;
 
 import im.delight.android.location.SimpleLocation;
 
