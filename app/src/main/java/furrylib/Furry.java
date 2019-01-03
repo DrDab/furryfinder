@@ -8,6 +8,7 @@ public class Furry implements Comparable<Furry>
     private String userName;
     private String description;
     private String profile;
+    private String profilePicture;
 
     /**
      * Initializes an instance of a Furry object.
@@ -20,7 +21,7 @@ public class Furry implements Comparable<Furry>
      * @param description (the FurryMap description of the furry)
      * @param profile (the FurryMap profile URL of the furry)
      */
-    public Furry(double latitude, double longitude, String id, String userName, String description, String profile)
+    public Furry(double latitude, double longitude, String id, String userName, String description, String profile, String profilePicture)
     {
         this.latitude = latitude;
         this.longitude = longitude;
@@ -28,6 +29,7 @@ public class Furry implements Comparable<Furry>
         this.userName = userName;
         this.description = description;
         this.profile = profile;
+        this.profilePicture = profilePicture;
     }
 
     @Override
@@ -94,34 +96,51 @@ public class Furry implements Comparable<Furry>
         return profile;
     }
 
+    /**
+     * A function to return the profile picture URL of the furry.
+     * @return the profile picture URL of the furry.
+     */
+    public String getProfilePictureURL()
+    {
+        return profilePicture;
+    }
+
+    /**
+     * A function to return the Haversine distance in a specified unit between two coordinate pairs P1 and P2.
+     *
+     * @param lat1 the latitude of point P1
+     * @param lon1 the longitude of point P1
+     * @param lat2 the latitude of point P2
+     * @param lon2 the longitude of point P2
+     * @param unit a character representing the measurement unit of distance between P1 and P2 ('M': miles, 'K': kilometers, 'N': nautical miles)
+     * @return the Haversine distance between points P1 and P2.
+     */
     private double distance(double lat1, double lon1, double lat2, double lon2, char unit)
     {
-        double theta = lon1 - lon2;
-        double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
-        dist = Math.acos(dist);
-        dist = rad2deg(dist);
-        dist = dist * 60 * 1.1515;
-        if (unit == 'K')
-        { // kilometers
-            dist = dist * 1.609344;
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
+
+        lat1 = Math.toRadians(lat1);
+        lat2 = Math.toRadians(lat2);
+
+        double a = Math.pow(Math.sin(dLat / 2.0), 2) + Math.pow(Math.sin(dLon / 2.0), 2) * Math.cos(lat1) * Math.cos(lat2);
+        double rad = 6371.0; // radius of earth in km
+        double c = 2 * Math.asin(Math.sqrt(a));
+
+        if (unit == 'M')
+        {
+            return rad * c * 0.62137119;
         }
         else if (unit == 'N')
-        { // nautical miles
-            dist = dist * 0.8684;
+        {
+            return rad * c * 0.539957;
         }
-        return dist;
-    }
+        else
+        {
+            return rad * c;
+        }
 
-    private double deg2rad(double deg)
-    {
-        return (deg * Math.PI / 180.0);
     }
-
-    private double rad2deg(double rad)
-    {
-        return (rad * 180.0 / Math.PI);
-    }
-
 
     /**
      * A function to return the distance of the furry in miles (in relation to another pair of coordinates).
@@ -197,4 +216,5 @@ public class Furry implements Comparable<Furry>
     {
         return angleFromCoords(f.getLatitude(), f.getLongitude());
     }
+
 }

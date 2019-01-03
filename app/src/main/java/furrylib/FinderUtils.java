@@ -44,7 +44,8 @@ public class FinderUtils
                 int opacityFactor = furryProfile.getInt(4);
                 String userName = furryProfile.getString(5);
                 String profile = furryProfile.getString(6);
-                tmpLst.add(new Furry(latitude, longitude, id, userName, description, profile));
+                String profilePicture = furryProfile.getInt(7) == 0 ? null : "/images/avatar/" + furryProfile.getInt(7) + ".png";
+                tmpLst.add(new Furry(latitude, longitude, id, userName, description, profile, profilePicture));
             }
             return tmpLst;
         }
